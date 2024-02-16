@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment 2 - COMP3962</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <nav id="nav">
+        <a href="/index.html">Home</a>
+        <a href="/todo.html">To Do</a>
+        <a href="/help.html">Help</a>
+    </nav>
+    <br>
+    <br>
+    <br>
+
+    <input type="text" id="add-todo" placeholder="Enter a task">
+    <button id="add">Add</button>
+    <script>
+        document.getElementById('add').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            const todoInput = document.getElementById('add-todo').value.trim();
+            // console log the type of data that todoInput is
+            if (todoInput === '') {
+                alert('Please enter a todo item');
+                return;
+            }
+
+            // Create a new item in DynamoDB
+            fetch('/api/todo_item', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        new_todo_item: todoInput
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    const todoList = document.getElementById('todo-list');
+                    const li = document.createElement('li');
+                    li.textContent = todoInput;
+                    todoList.appendChild(li);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+                // clear the input field
+                document.getElementById('add-todo').value = '';
+        });
+    </script>
+    <br>
+    <ul id="todo-list"></ul>
+    <script>
+        window.onload = function () {
+            fetch('/api/todo_item')
+                .then(response => response.json())
+                .then(data => {
+                    const todoList = document.getElementById('todo-list');
+                    data.forEach(item => {
+                        const li = document.createElement('li');
+                        // get the text from the item
+
+                        li.textContent = item.todo_item;
+                        todoList.appendChild(li);
+                    });
+                })
+                .catch(error => console.error('Error fetching todo list:', error));
+        };
+    </script>
+</body>
+
+</html>
