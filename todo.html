@@ -22,10 +22,8 @@
     <button id="add">Add</button>
     <script>
         document.getElementById('add').addEventListener('click', function (event) {
-            event.preventDefault(); // Prevent form submission
-
+            event.preventDefault();
             const todoInput = document.getElementById('add-todo').value.trim();
-            // console log the type of data that todoInput is
             if (todoInput === '') {
                 alert('Please enter a todo item');
                 return;
@@ -67,7 +65,6 @@
                     data.forEach(item => {
                         const li = document.createElement('li');
                         // get the text from the item
-
                         li.textContent = item.todo_item;
                         todoList.appendChild(li);
                     });

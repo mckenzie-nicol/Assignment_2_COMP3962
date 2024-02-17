@@ -9,10 +9,9 @@ const port = process.env.PORT || 3000;
 
 // Configure AWS SDK
 AWS.config.update({
-    // link environment variable to AWS SDK
-    region: process.env.REGION, // Replace with your AWS region
-    accessKeyId: process.env.ACCESS_KEY_ID, // Replace with your AWS access key ID
-    secretAccessKey: process.env.SECRET_ACCESS_KEY // Replace with your AWS secret access key
+    region: process.env.REGION,
+    accessKeyId: process.env.ACCESS_KEY_ID,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY
 });
 
 // Create DynamoDB Document Client
@@ -29,7 +28,7 @@ app.use(express.static(__dirname));
 app.post('/api/todo_item', (req, res) => {
     //
     const params = {
-        TableName: 'COMP3962-assignment2', // Replace with your DynamoDB table name
+        TableName: 'COMP3962-assignment2',
         Item: {
             todo_item: req.body.new_todo_item
         }
@@ -47,7 +46,7 @@ app.post('/api/todo_item', (req, res) => {
 // Endpoint for fetching todo list items from DynamoDB
 app.get('/api/todo_item', (req, res) => {
     const params = {
-        TableName: 'COMP3962-assignment2' // Replace with your DynamoDB table name
+        TableName: 'COMP3962-assignment2'
     };
 
     dynamodb.scan(params, (err, data) => {
